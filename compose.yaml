@@ -1,21 +1,24 @@
 services:
-  eco_garden_co:
+  green_goodies:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: eco_garden_co
+    container_name: green_goodies
     working_dir: /var/www/symfony
     volumes:
       - ./:/var/www/symfony
     ports:
       - "8000:8000"
-    networks:
-      - local
 
-networks:
-  eco_garden_co_network:
-    name: eco_garden_co_network
-    external: true
-  local:
-    name: local
-    external: true
+  green_goodies_database:
+    image: postgres:17.2-alpine
+    container_name: green_goodies_database
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: P@ss1234
+      POSTGRES_DB: example
+    ports:
+      - "8989:5432"
+    volumes:
+      - ./pgsql-database:/var/lib/postgresql/data
