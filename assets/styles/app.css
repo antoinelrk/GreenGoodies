@@ -1,5 +1,18 @@
-header {
-    background-color: #FFFDF7;
+* {
+    box-sizing: border-box;
+}
+
+body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#app {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
 .font-inter {
