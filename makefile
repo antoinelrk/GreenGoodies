@@ -19,6 +19,9 @@ schema-update:
 make-migration:
 	@docker exec -it green_goodies php bin/console make:migration
 
+migration-migrate:
+	@docker exec -it green_goodies php bin/console doctrine:migrations:migrate
+
 fixtures-load:
 	@docker exec -it green_goodies php bin/console doctrine:fixtures:load
 
