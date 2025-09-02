@@ -22,3 +22,11 @@ services:
       - "8989:5432"
     volumes:
       - ./pgsql-database:/var/lib/postgresql/data
+
+  green_goodies_mailpit:
+    image: axllent/mailpit
+    container_name: green_goodies_mailpit
+    restart: always
+    ports:
+      - "1080:8025"
+      - "1025:1025"
