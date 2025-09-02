@@ -13,13 +13,23 @@
                 <a href="#">Mon panier</a>
             </li>
 
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <li>
                 <a href="#">Mon compte</a>
             </li>
 
             <li>
-                <a href="#">Déconnexion</a>
+                <a href="/logout">Déconnexion</a>
             </li>
+            {% else %}
+                <li>
+                    <a href="/login">Connexion</a>
+                </li>
+
+                <li>
+                    <a href="/register">Inscription</a>
+                </li>
+            {% endif %}
         </ul>
     </nav>
 </header>
