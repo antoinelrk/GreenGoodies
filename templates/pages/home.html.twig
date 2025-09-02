@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Page{% endblock %}
+
+{% block body %}
+    <div class="overflow-hidden flex min-h-full" style="background-color: #E8F0E3;">
+        <div class="flex flex-col justify-center items-center w-1/2">
+            <div class="font-inter w-1/3 flex flex-col space-y-8">
+                <h1 class="text-5xl">
+                    Bienvenue
+                </h1>
+
+                <p>
+                    Découvrez notre univers de produits durables et éthiques pour une consommation responsable
+                </p>
+                <p>
+                    Retrouvez des articles d’hygiène & beauté, des accessoires & boissons et du prêt
+                    à porter
+                </p>
+            </div>
+        </div>
+
+        <div class="w-1/2">
+            <img src="{{ asset('images/hero-home.png') }}" alt="" />
+        </div>
+    </div>
+
+    {% include 'partials/page-title.html.twig' with { title: 'Nos Produits' } %}
+
+    <div style="background-color: #FFFDF7;">
+        <div class="overflow-hidden">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                {% for product in products %}
+                    {% include 'partials/products/product.html.twig' with {
+                        to: '#',
+                        image: product.image,
+                        name: product.name,
+                        description: product.description,
+                        price: product.price
+                    } %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="flex w-full justify-between" style="background-color: #EBE3D3;">
+        <div class="w-1/3 h-max mt-auto mb-12 ml-12">
+            <h3 class="uppercase text-2xl">Notre conviction</h3>
+            <p class="mt-4">
+                Chez GreenGoodies, nous croyons en un monde où le commerce peut être synonyme de bien-être pour la planète et ses habitants. Notre mission est de vous proposer une sélection rigoureuse de produits qui allient qualité, durabilité et éthique.
+            </p>
+        </div>
+
+        <div class="w-1/3">
+            <img src="{{ asset('images/our-beliefs.png') }}" alt="" />
+        </div>
+    </div>
+
+    <div class="flex w-full justify-between" style="background-color: #E8F0E3;">
+        <div class="w-1/3">
+            <img src="{{ asset('images/our-values.png') }}" alt="" />
+        </div>
+
+        <div class="w-1/3 h-max mt-auto mr-12 mb-12">
+            <h3 class="uppercase text-2xl">Nos valeurs</h3>
+
+            <p class="mt-4">
+                Durabilité : Nous sélectionnons soigneusement des produits qui respectent l'environnement et favorisent la durabilité.<br />
+                Éthique : Nous nous engageons à travailler avec des partenaires et des fournisseurs qui partagent nos valeurs éthiques.<br />
+                Écologie : Nous encourageons des pratiques respectueuses de l'écosystème et privilégions les matériaux écologiques.<br />
+            </p>
+        </div>
+    </div>
+{% endblock %}

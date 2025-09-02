@@ -1,0 +1,35 @@
+<header class="flex justify-between px-24 py-8" style="background-color: #FFFDF7;">
+    <div class="flex justify-center">
+        <img class="my-auto w-max" src="{{ asset('images/logo.png') }}" alt="Logo">
+    </div>
+
+    <nav class="flex">
+        <ul class="flex space-x-12 text-md font-inter">
+            <li>
+                <a href="#">Nos produits</a>
+            </li>
+
+            <li>
+                <a href="#">Mon panier</a>
+            </li>
+
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+            <li>
+                <a href="#">Mon compte</a>
+            </li>
+
+            <li>
+                <a href="/logout">Déconnexion</a>
+            </li>
+            {% else %}
+                <li>
+                    <a href="/login">Connexion</a>
+                </li>
+
+                <li>
+                    <a href="/register">Inscription</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
