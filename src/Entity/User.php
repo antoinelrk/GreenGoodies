@@ -12,11 +12,17 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    /**
+     * @var int|null The unique identifier of this user
+     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    /**
+     * @var string|null The email of this user
+     */
     #[ORM\Column(length: 180)]
     private ?string $email = null;
 
@@ -27,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      */
     #[ORM\Column]
     private ?string $password = null;
@@ -37,11 +43,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     *
+     * @return $this
+     */
     public function setEmail(string $email): static
     {
         $this->email = $email;
@@ -89,6 +103,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     *
+     * @return $this
+     */
     public function setPassword(string $password): static
     {
         $this->password = $password;
@@ -98,12 +117,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Ensure the session doesn't contain actual password hashes by CRC32C-hashing them, as supported since Symfony 7.3.
+     *
+     * @return array<string, mixed>
      */
     public function __serialize(): array
     {
         $data = (array) $this;
         $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
-        
+
         return $data;
     }
 
