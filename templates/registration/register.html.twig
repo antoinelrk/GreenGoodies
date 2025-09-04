@@ -8,18 +8,28 @@
             <img class="object-cover" src="{{ asset('images/register.png') }}" alt="">
         </div>
 
-        <div class="flex w-1/2 items-center justify-center">
-            <div class="flex flex-col">
+        <div class="flex w-1/2 justify-center pt-24 h-max">
+            <div class="flex flex-col w-3/5">
                 {% for flash_error in app.flashes('verify_email_error') %}
                     <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
                 {% endfor %}
 
-                <h1>Register</h1>
+                <h1 class="text-3xl font-medium">
+                    S'inscrire
+                </h1>
 
                 {{ form_errors(registrationForm) }}
 
-                {{ form_start(registrationForm) }}
-                {{ form_row(registrationForm.email) }}
+                {{ form_start(registrationForm, {
+                    class: 'flex flex-col w-full mt-10',
+                }) }}
+
+                {{ form_row(registrationForm.email, {
+                    label: 'Email',
+                    label_attr: { class: 'text-neutral-600' },
+                    input_attr: { class: 'mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg' }
+                }) }}
+
                 {{ form_row(registrationForm.plainPassword, {
                     label: 'Password'
                 }) }}
@@ -29,6 +39,12 @@
 
                 <button type="submit" class="btn">S'inscrire</button>
                 {{ form_end(registrationForm) }}
+                <a
+                    class="text-neutral-500 mt-8 hover:text-neutral-600 hover:underline  mx-auto"
+                    href="/register"
+                >
+                    Pas encore de compte ? S’inscrire
+                </a>
             </div>
         </div>
     </div>
