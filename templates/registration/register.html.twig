@@ -3,47 +3,171 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <div class="flex max-h-screen overflow-hidden" style="background-color: #FFFDF7">
+    <div class="flex min-h-screen overflow-hidden font-inter" style="background-color: #FFFDF7">
         <div class="w-1/2">
             <img class="object-cover" src="{{ asset('images/register.png') }}" alt="">
         </div>
 
         <div class="flex w-1/2 justify-center pt-24 h-max">
             <div class="flex flex-col w-3/5">
-                {% for flash_error in app.flashes('verify_email_error') %}
-                    <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-                {% endfor %}
-
                 <h1 class="text-3xl font-medium">
-                    S'inscrire
+                    Inscription
                 </h1>
 
-                {{ form_errors(registrationForm) }}
+                <p>Tous les champs sont obligatoires.</p>
 
-                {{ form_start(registrationForm, {
-                    class: 'flex flex-col w-full mt-10',
-                }) }}
+                <form name="registration_form" class="flex flex-col w-full mt-10" method="post">
+                    {% for flash_error in app.flashes('verify_email_error') %}
+                        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+                    {% endfor %}
 
-                {{ form_row(registrationForm.email, {
-                    label: 'Email',
-                    label_attr: { class: 'text-neutral-600' },
-                    input_attr: { class: 'mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg' }
-                }) }}
+                    <!-- Prénom -->
+                    <label
+                        class="text-neutral-600"
+                        for="registration_form_firstName"
+                    >
+                        Prénom
+                    </label>
 
-                {{ form_row(registrationForm.plainPassword, {
-                    label: 'Password'
-                }) }}
-                {{ form_row(registrationForm.agreeTerms, {
-                    label: 'J’accepte les CGU de GreenGoodies'
-                }) }}
+                    <input
+                        type="text"
+                        value=""
+                        name="registration_form[firstName]"
+                        id="registration_form_firstName"
+                        class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                        autocomplete="registration_form_firstName"
+                        required
+                        autofocus
+                    >
 
-                <button type="submit" class="btn">S'inscrire</button>
-                {{ form_end(registrationForm) }}
+                    <!-- Nom -->
+                    <label
+                        class="text-neutral-600 mt-8"
+                        for="registration_form_lastName"
+                    >
+                        Nom
+                    </label>
+
+                    <input
+                        type="text"
+                        value=""
+                        name="registration_form[lastName]"
+                        id="registration_form_lastName"
+                        class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                        autocomplete="registration_form_lastName"
+                        required
+                        autofocus
+                    >
+
+                    <!-- Email -->
+                    <label
+                        class="text-neutral-600 mt-8"
+                        for="registration_form_email"
+                    >
+                        Adresse email
+                    </label>
+
+                    <input
+                        type="email"
+                        value=""
+                        name="registration_form[email]"
+                        id="registration_form_email"
+                        class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                        autocomplete="registration_form_email"
+                        required
+                        autofocus
+                    >
+
+                    <!-- Password -->
+                    <label
+                        class="text-neutral-600 mt-8"
+                        for="registration_form_plainPassword_second"
+                    >
+                        Mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registration_form_plainPassword_second"
+                        name="registration_form[plainPassword][first]"
+                        class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <!-- Confirm Password -->
+                    <label
+                        class="text-neutral-600 mt-8"
+                        for="registration_form_plainPassword_second"
+                    >
+                        Confirmation du mot de passe
+                    </label>
+
+                    <input
+                        type="password"
+                        id="registration_form_plainPassword_second"
+                        name="registration_form[plainPassword][second]"
+                        class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <!-- Checkbox -->
+                    <div class="flex items-center gap-2 mt-6 text-neutral-600">
+                        <input
+                            type="checkbox"
+                            id="registration_form_agreeTerms"
+                            name="registration_form[agreeTerms]"
+                            required="required"
+                            class="form-checkbox cursor-pointer"
+                        />
+
+                        <label class="cursor-pointer" for="registration_form_agreeTerms">
+                            J’accepte les CGU de GreenGoodies
+                        </label>
+                    </div>
+
+                    <!-- CSRF token -->
+                    <input
+                        type="hidden"
+                        name="{{ registrationForm._token.vars.full_name }}"   {# ex: registration_form[_token] #}
+                        value="{{ registrationForm._token.vars.value }}"
+                    />
+
+                    <button
+                        class="bg-neutral-600 py-6 text-white cursor-pointer mt-10 hover:bg-neutral-500"
+                        type="submit"
+                    >
+                        S'inscrire
+                    </button>
+                </form>
+
+{#                {{ form_errors(registrationForm) }}#}
+
+{#                {{ form_start(registrationForm, {#}
+{#                    class: 'flex flex-col w-full mt-10',#}
+{#                }) }}#}
+
+{#                {{ form_row(registrationForm.email, {#}
+{#                    label: 'Email',#}
+{#                    label_attr: { class: 'text-neutral-600' },#}
+{#                    input_attr: { class: 'mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg' }#}
+{#                }) }}#}
+
+{#                {{ form_row(registrationForm.plainPassword, {#}
+{#                    label: 'Password'#}
+{#                }) }}#}
+{#                {{ form_row(registrationForm.agreeTerms, {#}
+{#                    label: 'J’accepte les CGU de GreenGoodies'#}
+{#                }) }}#}
+
+{#                <button type="submit" class="btn">S'inscrire</button>#}
+{#                {{ form_end(registrationForm) }}#}
                 <a
-                    class="text-neutral-500 mt-8 hover:text-neutral-600 hover:underline  mx-auto"
-                    href="/register"
+                    class="text-neutral-500 mt-8 hover:text-neutral-600 hover:underline mx-auto"
+                    href="/login"
                 >
-                    Pas encore de compte ? S’inscrire
+                    Déjà un compte ? Se connecter
                 </a>
             </div>
         </div>
