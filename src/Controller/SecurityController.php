@@ -24,6 +24,7 @@ class SecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
+        // TODO: Faire un event, change le last logged at et envoyer un mail (Bonus)
         if ($this->getUser()) {
             $user = $this->getUser();
             $user->setLastLoggedAt(new DateTimeImmutable());
