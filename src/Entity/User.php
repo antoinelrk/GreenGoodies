@@ -65,6 +65,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(nullable: true)]
     private ?DateTimeImmutable $lastLoggedAt = null;
 
+    #[ORM\Column(options: ["default" => false])]
+    private bool $apiEnabled = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -178,6 +181,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     *
+     *
+     * @return bool
+     */
+    public function getApiEnabled(): bool
+    {
+        return $this->apiEnabled;
+    }
+
+    /**
+     * @param bool $apiEnabled
+     *
+     * @return $this
+     */
+    public function setApiEnabled(bool $apiEnabled): static
+    {
+        $this->apiEnabled = $apiEnabled;
 
         return $this;
     }
