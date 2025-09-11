@@ -13,14 +13,10 @@
     {% endblock %}
 </head>
 <body>
-<div id="app">
-    {% include 'partials/header.html.twig' %}
-
-    <main class="flex flex-col min-h-screen">
+    <div id="app">
+        {% include 'partials/header.html.twig' %}
         {% block body %}{% endblock %}
-    </main>
-
-    {% include 'partials/footer.html.twig' %}
-</div>
+        {% include 'partials/footer.html.twig' %}
+    </div>
 </body>
 </html>

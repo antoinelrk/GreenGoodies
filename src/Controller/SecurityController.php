@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use DateTimeImmutable;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -9,6 +11,10 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {}
+
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -17,6 +23,16 @@ class SecurityController extends AbstractController
 
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
+
+        // TODO: Faire un event, change le last logged at et envoyer un mail (Bonus)
+        if ($this->getUser()) {
+            $user = $this->getUser();
+            $user->setLastLoggedAt(new DateTimeImmutable());
+
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+        }
+
 
         return $this->render('security/login.html.twig', [
             'last_username' => $lastUsername,
