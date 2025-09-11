@@ -5,14 +5,19 @@
 body {
     position: relative;
     display: flex;
-    flex-direction: column;
-}
-
-#app {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
     min-height: 100vh;
+    height: 100%;
+
+    #app {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        min-height: 100vh;
+        height: 100%;
+        background-color: #F7F1EC;
+    }
 }
 
 .font-inter {
