@@ -1,16 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Se connecter - GreenGoodies{% endblock %}
 
 {% block body %}
-<div class="flex max-h-screen overflow-hidden" style="background-color: #FFFDF7">
+<div class="flex max-h-screen overflow-hidden font-inter" style="background-color: #FFFDF7">
     <div class="w-1/2">
         <img class="object-cover" src="{{ asset('images/login.png') }}" alt="">
     </div>
 
-    <div class="flex w-1/2 items-center justify-center">
-        <div class="flex flex-col">
-            <form method="post">
+    <div class="flex w-1/2 justify-center pt-24 h-max">
+        <div class="flex flex-col w-3/5">
+            <h1 class="text-3xl font-medium">
+                Connexion
+            </h1>
+
+            <form class="flex flex-col w-full mt-10" method="post">
                 {% if error %}
                     <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %}
@@ -21,11 +25,40 @@
                     </div>
                 {% endif %}
 
-                <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-                <label for="username">Email</label>
-                <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-                <label for="password">Password</label>
-                <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+                <label
+                    class="text-neutral-600"
+                    for="username"
+                >
+                    Adresse email
+                </label>
+
+                <input
+                    type="email"
+                    value="{{ last_username }}"
+                    name="_username"
+                    id="username"
+                    class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                    autocomplete="email"
+                    required
+                    autofocus
+                >
+
+                <label
+                    class="text-neutral-600 mt-8"
+                    for="password"
+                >
+                    Mot de passe
+                </label>
+
+                <input
+                    type="password"
+                    name="_password"
+                    id="password"
+                    class="mt-4 form-control py-7 pl-4 border border-neutral-800 font-inter text-lg"
+                    autocomplete="current-password"
+                    required
+                >
+
                 <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
                 {#
@@ -38,10 +71,20 @@
                 </div>
                 #}
 
-                <button class="btn btn-lg btn-primary" type="submit">
-                    Sign in
+                <button
+                    class="bg-neutral-600 py-6 text-white cursor-pointer mt-10 hover:bg-neutral-500"
+                    type="submit"
+                >
+                    Se connecter
                 </button>
             </form>
+
+            <a
+                class="text-neutral-500 mt-8 hover:text-neutral-600 hover:underline mx-auto"
+                href="/register"
+            >
+                Déjà un compte ? Se connecter
+            </a>
         </div>
     </div>
 </div>

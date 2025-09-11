@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -29,6 +30,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lastName = null;
+
+    /**
+     * @var string|null
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $firstName = null;
+
+    /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
@@ -43,14 +56,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $lastLoggedAt = null;
+
+    #[ORM\Column(options: ["default" => false])]
+    private bool $apiEnabled = false;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return string|null
-     */
+ * @return string|null
+ */
     public function getEmail(): ?string
     {
         return $this->email;
@@ -64,6 +89,46 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    /**
+     * @param string $firstName
+     *
+     * @return $this
+     */
+    public function setFirstName(string $firstName): static
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * @param string $lastName
+     *
+     * @return $this
+     */
+    public function setLastName(string $lastName): static
+    {
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -116,6 +181,101 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     *
+     *
+     * @return bool
+     */
+    public function getApiEnabled(): bool
+    {
+        return $this->apiEnabled;
+    }
+
+    /**
+     * @param bool $apiEnabled
+     *
+     * @return $this
+     */
+    public function setApiEnabled(bool $apiEnabled): static
+    {
+        $this->apiEnabled = $apiEnabled;
+
+        return $this;
+    }
+
+    /**
+     * Summary of getCreatedAt
+     *
+     * @return DateTimeImmutable|null
+     */
+    public function getCreatedAt(): ?DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Summary of setCreatedAt
+     *
+     * @param DateTimeImmutable $createdAt
+     *
+     * @return $this
+     */
+    public function setCreatedAt(DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+
+    /**
+     * Summary of getCreatedAt
+     *
+     * @return DateTimeImmutable|null
+     */
+    public function getUpdatedAt(): ?DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Summary of setCreatedAt
+     *
+     * @param DateTimeImmutable $updatedAt
+     *
+     * @return $this
+     */
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+
+    /**
+     *
+     *
+     * @return DateTimeImmutable|null
+     */
+    public function getLastLoggedAt(): ?DateTimeImmutable
+    {
+        return $this->lastLoggedAt;
+    }
+
+    /**
+     *
+     * @param DateTimeImmutable $lastLoggedAt
+     *
+     * @return $this
+     */
+    public function setLastLoggedAt(DateTimeImmutable $lastLoggedAt): static
+    {
+        $this->lastLoggedAt = $lastLoggedAt;
 
         return $this;
     }
