@@ -9,9 +9,15 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class MeController extends AbstractController
 {
-    #[Route('/my-profile', name: 'app_me')]
-    public function __invoke(): Response
+    #[Route('/me', name: 'app_me')]
+    public function me(): Response
     {
-        return $this->render('pages/my-profile.html.twig');
+        return $this->render('pages/me.html.twig');
+    }
+
+    public function delete(): Response
+    {
+        $this->addFlash('success', 'Your account has been deleted.');
+        return $this->redirectToRoute('app_home');
     }
 }

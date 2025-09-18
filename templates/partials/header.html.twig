@@ -6,7 +6,7 @@
     <nav class="flex">
         <ul class="flex space-x-12 text-md font-inter">
             <li>
-                <a href="/">Nos produits</a>
+                <a class="font-inter" href="{{ path('app_home') }}">Nos produits</a>
             </li>
 
             <li>
@@ -15,19 +15,19 @@
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <li>
-                <a href="/my-profile">Mon compte</a>
+                <a href="{{ path('app_me') }}">Mon compte</a>
             </li>
 
             <li>
-                <a href="/logout">Déconnexion</a>
+                <a href="{{ path('app_logout') }}">Déconnexion</a>
             </li>
             {% else %}
                 <li>
-                    <a href="/login">Connexion</a>
+                    <a href="{{ path('app_login') }}">Connexion</a>
                 </li>
 
                 <li>
-                    <a href="/register">Inscription</a>
+                    <a href="{{ path('app_register') }}">Inscription</a>
                 </li>
             {% endif %}
         </ul>

@@ -1,0 +1,170 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block javascripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const popup   = document.querySelector('#confirmPopup');
+            const dialog  = document.querySelector('#confirmDialog');
+            const msgEl   = document.querySelector('#confirmMessage');
+            const btnOk   = document.querySelector('#confirmOk');
+            const btnNo   = document.querySelector('#confirmCancel');
+
+            let currentForm = null;
+            let lastFocused = null;
+
+            const open = (message, form) => {
+                currentForm = form || null;
+                lastFocused = document.activeElement;
+                if (message) msgEl.textContent = message;
+                popup.classList.remove('hidden');
+                btnOk.focus();
+                document.body.classList.add('overflow-hidden');
+            };
+
+            const close = () => {
+                popup.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                if (lastFocused) lastFocused.focus();
+                currentForm = null;
+            };
+
+            // TODO: Rename .js-confirm to .js-confirm-button or another more specific name
+            document.querySelectorAll('.js-confirm').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const form = btn.dataset.form
+                        ? document.querySelector(btn.dataset.form)
+                        : btn.closest('form');
+
+                    if (!form) return;
+
+                    const message = btn.dataset.message || 'Es-tu sûr ?';
+                    open(message, form);
+                });
+            });
+
+            btnNo.addEventListener('click', close);
+            btnOk.addEventListener('click', () => {
+                if (currentForm) currentForm.submit();
+            });
+
+            popup.addEventListener('click', (e) => {
+                if (!dialog.contains(e.target)) close();
+            });
+
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
+                    close();
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <main class="flex flex-col h-full pb-12" style="background-color: #F7F1EC;">
+        <div class="flex flex-col gap-y-8 mt-24 mx-auto w-2/5">
+            <h1 class="mx-auto text-2xl font-inter">Mon compte</h1>
+
+            <div class="flex flex-col bg-white p-12">
+                <h2 class="font-bold mb-6">Mes commandes</h2>
+
+                <table>
+                    <tbody class="flex flex-col w-full divide-y divide-gray-200">
+                        <tr class="flex justify-between w-full text-gray-400 font-inter text-sm">
+                            <th class="text-left py-4">N°</th>
+                            <th class="text-left py-4">Date</th>
+                            <th class="text-left py-4">Prix</th>
+                        </tr>
+
+                        <tr class="flex justify-between w-full">
+                            <td class="text-left py-6">01</td>
+                            <td class="text-left py-6">01/01/2024</td>
+                            <td class="text-left py-6">123,4€</td>
+                        </tr>
+                        <tr class="flex justify-between w-full">
+                            <td class="text-left py-6">01</td>
+                            <td class="text-left py-6">01/01/2024</td>
+                            <td class="text-left py-6">123,4€</td>
+                        </tr>
+                        <tr class="flex justify-between w-full">
+                            <td class="text-left py-6">01</td>
+                            <td class="text-left py-6">01/01/2024</td>
+                            <td class="text-left py-6">123,4€</td>
+                        </tr>
+                        <tr class="flex justify-between w-full">
+                            <td class="text-left py-6">01</td>
+                            <td class="text-left py-6">01/01/2024</td>
+                            <td class="text-left py-6">123,4€</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- TODO: Ajouter une condition pour afficher ce message uniquement si l'utilisateur n'a pas de commandes -->
+                <p class="italic text-gray-400">Aucune commandes</p>
+            </div>
+
+            <!-- ENABLE API ACCESS -->
+            <form
+                class="flex flex-col bg-white p-12"
+                action="/account/1/enable-api"
+                method="POST"
+                id="enableApiForm"
+            >
+                <h2 class="font-bold mb-6">Mon accès API</h2>
+
+                <input type="hidden" name="id" value="1" />
+                <input type="hidden" name="_token" value="{{ csrf_token('api_enable') }}">
+
+                <button
+                    type="button"
+                    class="js-confirm flex font-inter justify-center bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+                    data-form="#enableApiForm"
+                    data-message="Confirmer l'activation de l'API ?"
+                >
+                    Activer mon accès API
+                </button>
+            </form>
+
+            <!-- REMOVE USER ACCOUNT -->
+            <form
+                class="flex flex-col bg-white p-12"
+                action="/account/remove"
+                method="POST"
+                id="deleteAccountForm"
+            >
+                <input type="hidden" name="id" value="1" /> <!-- UserID -->
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-account') }}">
+
+                <button
+                    type="button"
+                    class="js-confirm flex font-inter justify-center bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+                    data-form="#deleteAccountForm"
+                    data-message="Es-tu sûr de vouloir supprimer ton compte ?"
+                >
+                    Supprimer mon compte
+                </button>
+            </form>
+
+            <!-- POPUP DE CONFIRMATION -->
+            <div id="confirmPopup" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+                <div id="confirmDialog" class="rounded-xl bg-white p-6 shadow-lg max-w-sm w-full">
+                    <p id="confirmMessage" class="text-lg font-medium text-neutral-800">
+                        Es-tu sûr ?
+                    </p>
+                    <div class="mt-4 flex justify-end gap-3">
+                        <button type="button" id="confirmCancel"
+                                class="rounded-lg border border-neutral-300 px-4 py-2 text-neutral-700 hover:bg-neutral-100">
+                            Non
+                        </button>
+                        <button type="button" id="confirmOk"
+                                class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700">
+                            Oui
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
