@@ -23,7 +23,7 @@ migration-migrate:
 	@docker exec -it green_goodies php bin/console doctrine:migrations:migrate
 
 fixtures-load:
-	@docker exec -it green_goodies php bin/console doctrine:fixtures:load
+	@docker exec -it green_goodies php bin/console doctrine:fixtures:load --no-interaction
 
 cache-clear:
 	@docker exec -it green_goodies php bin/console cache:clear
