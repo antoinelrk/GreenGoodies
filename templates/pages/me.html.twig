@@ -108,22 +108,23 @@
             <!-- ENABLE API ACCESS -->
             <form
                 class="flex flex-col bg-white p-12"
-                action="/account/1/enable-api"
+                action="{{ path('app_api_toggle') }}"
                 method="POST"
                 id="enableApiForm"
             >
-                <h2 class="font-bold mb-6">Mon accès API</h2>
+                <h2 class="font-bold mb-6">
+                    Mon accès API {{ app.user.apiEnabled ? '<span class="text-green-600 font-medium">(actif)</span>' : '<span class="text-red-600 font-medium">(inactif)</span>' }}
+                </h2>
 
-                <input type="hidden" name="id" value="1" />
                 <input type="hidden" name="_token" value="{{ csrf_token('api_enable') }}">
 
                 <button
                     type="button"
-                    class="js-confirm flex font-inter justify-center bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+                    class="js-confirm flex font-inter justify-center mt-4 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
                     data-form="#enableApiForm"
                     data-message="Confirmer l'activation de l'API ?"
                 >
-                    Activer mon accès API
+                    {{ app.user.apiEnabled ? 'Désactiver mon accès API' : 'Activer mon accès API' }}
                 </button>
             </form>
 
@@ -134,7 +135,6 @@
                 method="POST"
                 id="deleteAccountForm"
             >
-                <input type="hidden" name="id" value="1" /> <!-- UserID -->
                 <input type="hidden" name="_token" value="{{ csrf_token('delete-account') }}">
 
                 <button

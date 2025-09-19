@@ -15,10 +15,33 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 final class MeController extends AbstractController
 {
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager
+    ) {}
+
     #[Route('/me', name: 'app_me')]
     public function me(): Response
     {
         return $this->render('pages/me.html.twig');
+    }
+
+    #[Route('/account/toggle-api', name: 'app_api_toggle', methods: ['POST'])]
+    public function toggleApi(): Response
+    {
+        $user = $this->getUser();
+
+        if (!$user) {
+            $this->addFlash('error', 'Aucun utilisateur connecté.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        $user->setApiEnabled(!$user->getApiEnabled());
+
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
+        $this->addFlash('success', 'Le mode API a été '.($user->getApiEnabled() ? 'activé' : 'désactivé').'.');
+
+        return $this->redirectToRoute('app_me');
     }
 
     /**
@@ -32,7 +55,6 @@ final class MeController extends AbstractController
      */
     #[Route('/account/delete', name: 'app_remove_account', methods: ['POST'])]
     public function delete(
-        EntityManagerInterface $entityManager,
         TokenStorageInterface $tokenStorage,
         RequestStack $requestStack,
     ): Response
@@ -43,12 +65,12 @@ final class MeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $conn = $entityManager->getConnection();
+        $conn = $this->entityManager->getConnection();
         $conn->beginTransaction();
 
         try {
-            $entityManager->remove($user);
-            $entityManager->flush();
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
             $conn->commit();
         } catch (\Throwable $e) {
             $conn->rollBack();
