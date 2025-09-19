@@ -12,7 +12,7 @@ class ProductFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = Factory::create('fr_FR'); // tu peux mettre 'en_US' ou autre
+        $faker = Factory::create('fr_FR');
 
         for ($i = 1; $i <= 20; $i++) {
             $product = new Product();
