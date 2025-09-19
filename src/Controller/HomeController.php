@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -11,12 +12,14 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class HomeController extends AbstractController
 {
+    public function __construct(
+        private readonly ProductRepository $productRepository
+    ) {}
+
     /**
      * Displays the home page with a list of products.
      *
      * @return Response
-     * 
-     * @throws TransportExceptionInterface
      */
     #[Route('/', name: 'app_home')]
     public function home(): Response
@@ -77,6 +80,8 @@ final class HomeController extends AbstractController
                 'image' => 'https://placehold.co/150'
             ]
         ];
+
+        $products = $this->productRepository->collect();
 
         return $this->render('pages/home.html.twig', [
             'products' => $products
