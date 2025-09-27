@@ -63,4 +63,9 @@ class Cart
 
         return $formatter->formatCurrency($this->getTotalPriceInCurrency($currency, $rate), $currency);
     }
+
+    public function hasItems(): bool
+    {
+        return $this->getTotalPrice() > 0;
+    }
 }
