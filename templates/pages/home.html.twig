@@ -30,7 +30,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {% for product in products %}
                     {% include 'partials/products/product.html.twig' with {
-                        to: '#',
+                        to: path('products.show', { id: product.id }),
                         picture: product.picture,
                         name: product.name,
                         excerpt: product.excerpt,

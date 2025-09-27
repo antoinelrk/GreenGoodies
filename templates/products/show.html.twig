@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Voir le produit{% endblock %}
+
+{% block body %}
+<div class="flex max-h-screen overflow-hidden font-inter h-full" style="background-color: #FFFDF7">
+    <div class="w-1/2">
+        <img class="object-cover w-full aspect-square" src="{{ product.picture }}" alt="">
+    </div>
+
+    <div class="flex flex-col w-1/2 justify-center pt-24 px-32">
+        <div class="flex flex-col space-y-8">
+            <h1 class="text-2xl font-medium">{{ product.name }}</h1>
+
+            <p class="text-4xl font-thin">{{ product.getFormattedPriceInCurrency }}</p>
+
+            <div class="mt-12 text-gray-400">
+                <h2 class="text-sm font-medium">Description</h2>
+
+                <p class="mt-3 text-lg">{{ product.description }}</p>
+            </div>
+        </div>
+
+        {# path('cart.add', { id: product.id }) #}
+        <a
+            class="flex justify-center w-full mx-auto mt-auto mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+            href="#"
+        >
+            Ajouter au panier
+        </a>
+    </div>
+</div>
+{% endblock %}
