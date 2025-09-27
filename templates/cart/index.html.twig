@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+<main class="flex flex-col h-full pb-12" style="background-color: #F7F1EC;">
+    <div class="flex flex-col mt-24 mx-auto w-2/5">
+        <h1 class="mx-auto text-2xl font-inter">Mon panier</h1>
+
+        {# Faire la suppression des articles avec une confirmation #}
+        {# Ce lien ne s'affiche que si le panier possède au moins 1 article #}
+        <a href="#" class="font-inter text-sm mt-8 text-gray-700">
+            X Vider mon panier
+        </a>
+
+        <div class="flex flex-col bg-white p-12 mt-2">
+            {# Faire une boucle pour afficher les articles du panier #}
+            {# Si le panier est vide, afficher le message "Aucun article" #}
+            <p class="italic text-gray-400 mx-auto">Aucun article</p>
+        </div>
+
+        <div class="flex text-gray-800 flex-col items-end p-6 px-8 mt-2" style="background-color: #FFFDF7B2;">
+            <div>
+                <p class="font-inter">
+                    Total panier :
+                    {# Faire un helper pour afficher la totalitée des prix #}
+                    <span class="font-thin text-2xl">8,56 €</span>
+                </p>
+
+                <p class="font-inter">Frais de port : Offert</p>
+            </div>
+        </div>
+
+        <a
+            class="flex justify-center w-4/5 mx-auto mt-12 mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+            href="#"
+        >
+            Valider ma commande
+        </a>
+    </div>
+</main>
+{% endblock %}
