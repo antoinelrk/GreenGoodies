@@ -9,11 +9,11 @@
                 <a class="font-inter" href="{{ path('app_home') }}">Nos produits</a>
             </li>
 
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <li>
-                <a href="#">Mon panier</a>
+                <a href="{{ path('app_cart') }}">Mon panier</a>
             </li>
 
-            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
             <li>
                 <a href="{{ path('app_me') }}">Mon compte</a>
             </li>
