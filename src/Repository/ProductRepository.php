@@ -16,6 +16,11 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    public function first(): Product
+    {
+        return $this->findOneBy([], ['id' => 'ASC']);
+    }
+
     public function collect(int $limit = 9)
     {
         return $this->createQueryBuilder('p')
