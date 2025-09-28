@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CartRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use NumberFormatter;
 
@@ -20,6 +22,17 @@ class Cart
 
     #[ORM\Column(name: 'total_price', type: 'integer', options: ['default' => 0])]
     private ?int $totalPrice = 0;
+
+    /**
+     * @var Collection<int, CartItem>
+     */
+    #[ORM\OneToMany(targetEntity: CartItem::class, mappedBy: 'cart', orphanRemoval: true)]
+    private Collection $cartItems;
+
+    public function __construct()
+    {
+        $this->cartItems = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -66,6 +79,36 @@ class Cart
 
     public function hasItems(): bool
     {
-        return $this->getTotalPrice() > 0;
+        return !$this->cartItems->isEmpty();
     }
+
+/**
+ * @return Collection<int, CartItem>
+ */
+public function getCartItems(): Collection
+{
+    return $this->cartItems;
+}
+
+public function addCartItem(CartItem $cartItem): static
+{
+    if (!$this->cartItems->contains($cartItem)) {
+        $this->cartItems->add($cartItem);
+        $cartItem->setCart($this);
+    }
+
+    return $this;
+}
+
+public function removeCartItem(CartItem $cartItem): static
+{
+    if ($this->cartItems->removeElement($cartItem)) {
+        // set the owning side to null (unless already changed)
+        if ($cartItem->getCart() === $this) {
+            $cartItem->setCart(null);
+        }
+    }
+
+    return $this;
+}
 }
