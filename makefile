@@ -27,3 +27,4 @@ fixtures-load:
 
 cache-clear:
 	@docker exec -it green_goodies php bin/console cache:clear
+	@php bin/console cache:clear

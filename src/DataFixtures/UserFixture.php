@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Cart;
 use App\Entity\User;
 use App\Enums\RolesEnum;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -23,7 +24,12 @@ class UserFixture extends Fixture
         $user->setLastName('Doe');
         $user->setApiEnabled(true);
         $user->setCreatedAt(new \DateTimeImmutable());
+        // Create cart
+        $cart = new Cart();
+        $cart->setCustomer($user);
+
         $manager->persist($user);
+        $manager->persist($cart);
 
         // Create random users
         for ($i = 1; $i <= 20; $i++) {
@@ -39,8 +45,12 @@ class UserFixture extends Fixture
             $user->setLastName($faker->lastName());
             $user->setApiEnabled($faker->boolean());
             $user->setCreatedAt(new \DateTimeImmutable());
+            // Create cart
+            $cart = new Cart();
+            $cart->setCustomer($user);
 
             $manager->persist($user);
+            $manager->persist($cart);
         }
 
         $manager->flush();

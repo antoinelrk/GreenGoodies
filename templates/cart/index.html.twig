@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier{% endblock %}
+
+{% block body %}
+<main class="flex flex-col h-full pb-12" style="background-color: #F7F1EC;">
+    <div class="flex flex-col mt-24 mx-auto w-2/5">
+        <h1 class="mx-auto text-2xl font-inter mb-8">Mon panier</h1>
+
+        {# Faire la suppression des articles avec une confirmation #}
+        {% if cart.hasItems %}
+            <a href="#" class="font-inter text-sm text-gray-700">
+                X Vider mon panier
+            </a>
+        {% endif %}
+
+        <div class="flex flex-col bg-white p-12 mt-2">
+            {% if cart.hasItems %}
+                <div class="flex justify-between items-center mb-8">
+                    <ul class="flex flex-col w-full space-y-4">
+                        {% for item in cart.cartItems %}
+                            <li class="flex w-full space-x-12 font-inter">
+                                <img src="{{ item.product.picture }}" alt="">
+
+                                <div class="my-auto">
+                                    <p class="font-bold">{{ item.product.name }}</p>
+                                    <p class="text-gray-600 text-sm">Quantité : {{ item.quantity }}</p>
+                                    <p class="text-xl mt-4">{{ item.getFormattedSubTotalInCurrency }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <p class="italic text-gray-400 mx-auto">Aucun article</p>
+            {% endif %}
+        </div>
+
+        <div class="flex text-gray-800 flex-col items-end p-6 px-8 mt-2" style="background-color: #FFFDF7B2;">
+            <div>
+                <p class="font-inter">
+                    Total panier :
+                    {# Faire un helper pour afficher la totalitée des prix #}
+                    <span class="font-thin text-2xl">{{ cart.getFormattedPriceInCurrency }}</span>
+                </p>
+
+                <p class="font-inter">Frais de port : Offert</p>
+            </div>
+        </div>
+
+        <a
+            class="flex justify-center w-4/5 mx-auto mt-12 mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+            href="#"
+        >
+            Valider ma commande
+        </a>
+    </div>
+</main>
+{% endblock %}
