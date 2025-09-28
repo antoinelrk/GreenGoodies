@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CartRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -11,12 +12,10 @@ final class CartController extends AbstractController
 {
     #[Route('cart', name: 'app_cart')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function index(): Response
+    public function index(CartRepository $cartRepository): Response
     {
-        $cart = $this->getUser()->getCart();
+        $cart = $cartRepository->get($this->getUser()->getId());
 
-        return $this->render('cart/index.html.twig', [
-            'cart' => $cart,
-        ]);
+        return $this->render('cart/index.html.twig', compact('cart'));
     }
 }
