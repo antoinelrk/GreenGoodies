@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Repository\CartItemRepository;
 use App\Repository\CartRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,6 +43,7 @@ final class CartController extends AbstractController
      * @param Request $request
      *
      * @return Response
+     * @throws ORMException
      */
     #[Route('cart/add/{product}', name: 'app_cart_add', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -68,5 +70,19 @@ final class CartController extends AbstractController
     public function update(Product $product, Request $request)
     {
         // Not implemented
+    }
+
+    /**
+     * Clear the cart.
+     *
+     * @return Response
+     */
+    #[Route('cart/clear', name: 'app_cart_clear', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function clear(): Response
+    {
+        $cart = $this->cartRepository->get($this->getUser()->getId());
+        $this->cartRepository->clear($cart);
+        return $this->redirectToRoute('app_cart');
     }
 }
