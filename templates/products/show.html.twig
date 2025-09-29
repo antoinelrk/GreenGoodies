@@ -27,7 +27,8 @@
         {% if app.user %}
             <form
                 class="mt-auto flex flex-col space-y-8"
-                action="{{ path('cart.update', { id: product.id }) }}"
+                action="{{ path(item ? 'app_cart_update' : 'app_cart_add', { product: product.id}) }}"
+                method="POST"
             >
                 <label
                     for="quantity"
