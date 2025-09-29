@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cart;
+use App\Entity\CartItem;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -36,11 +37,32 @@ class CartRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * Update cart total.
+     *
+     * @param Cart $cart
+     * @return void
+     */
     public function updateTotalPrice(Cart $cart): void
     {
         $totalPrice = array_reduce($cart->getCartItems()->toArray(), fn($sum, $item) => $sum + $item->getSubTotal(), 0);
         $cart->setTotalPrice($totalPrice);
+
         $this->entityManager->persist($cart);
+        $this->entityManager->flush();
+    }
+
+    public function clear(Cart $cart): void
+    {
+        $this->entityManager->createQueryBuilder()
+            ->delete(CartItem::class, 'ci')
+            ->where('ci.cart = :cart')
+            ->setParameter('cart', $cart)
+            ->getQuery()
+            ->execute();
+
+        $cart->setTotalPrice(0);
+
         $this->entityManager->flush();
     }
 }
