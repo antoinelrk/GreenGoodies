@@ -9,9 +9,11 @@
 
         {# Faire la suppression des articles avec une confirmation #}
         {% if cart.hasItems %}
-            <a href="#" class="font-inter text-sm text-gray-700">
-                X Vider mon panier
-            </a>
+            <form action="{{ path('app_cart_clear') }}" method="post">
+                <button class="cursor-pointer font-inter text-sm text-gray-700" type="submit">
+                    X Vider mon panier
+                </button>
+            </form>
         {% endif %}
 
         <div class="flex flex-col bg-white p-12 mt-2">
@@ -48,12 +50,14 @@
             </div>
         </div>
 
+        {% if cart.hasItems %}
         <a
             class="flex justify-center w-4/5 mx-auto mt-12 mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
             href="#"
         >
             Valider ma commande
         </a>
+        {% endif %}
     </div>
 </main>
 {% endblock %}
