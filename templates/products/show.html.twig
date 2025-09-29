@@ -22,12 +22,44 @@
         </div>
 
         {# path('cart.add', { id: product.id }) #}
-        <a
-            class="flex justify-center w-full mx-auto mt-auto mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
-            href="#"
-        >
-            Ajouter au panier
-        </a>
+{#        Si le produit est dans le panier, on affiche le bouton "Mettre à jour", sinon on affiche ajouter au panier.#}
+{#        Penser à ajouter la quantité actuelle dans le panier si le produit y est déjà.#}
+        {% if app.user %}
+            <form
+                class="mt-auto flex flex-col space-y-8"
+                action="{{ path(item ? 'app_cart_update' : 'app_cart_add', { product: product.id}) }}"
+                method="POST"
+            >
+                <label
+                    for="quantity"
+                    class="block mb-2 text-sm font-medium text-gray-900"
+                >
+                    Quantité
+                </label>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    value="{{ item.quantity ?? 1 }}"
+                    min="0"
+                    class="bg-white border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 block w-full p-4"
+                >
+
+                <button
+                    class="flex justify-center w-full mx-auto mt-auto mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+                >
+                    {{ item ? 'Mettre à jour' : 'Ajouter au panier' }}
+                </button>
+            </form>
+        {% else %}
+            <a
+                class="flex justify-center w-full mx-auto mt-auto mb-8 bg-neutral-600 py-8 text-white cursor-pointer hover:bg-neutral-500"
+                href="{{ path('app_login') }}"
+            >
+                Me connecter pour ajouter au panier
+            </a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
