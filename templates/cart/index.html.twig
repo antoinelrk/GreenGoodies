@@ -7,10 +7,18 @@
     <div class="flex flex-col mt-24 mx-auto w-2/5">
         <h1 class="mx-auto text-2xl font-inter mb-8">Mon panier</h1>
 
-        {# Faire la suppression des articles avec une confirmation #}
         {% if cart.hasItems %}
-            <form action="{{ path('app_cart_clear') }}" method="post">
-                <button class="cursor-pointer font-inter text-sm text-gray-700" type="submit">
+            <form
+                action="{{ path('app_cart_clear') }}"
+                method="post"
+                id="clearCartForm"
+            >
+                <button
+                    class="js-confirm cursor-pointer font-inter text-sm text-gray-700"
+                    type="button"
+                    data-form="#clearCartForm"
+                    data-message="Cela supprimera tous les articles du panier, continuer ?"
+                >
                     X Vider mon panier
                 </button>
             </form>

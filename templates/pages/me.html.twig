@@ -2,66 +2,6 @@
 
 {% block title %}Mon Profil{% endblock %}
 
-{% block javascripts %}
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const popup   = document.querySelector('#confirmPopup');
-            const dialog  = document.querySelector('#confirmDialog');
-            const msgEl   = document.querySelector('#confirmMessage');
-            const btnOk   = document.querySelector('#confirmOk');
-            const btnNo   = document.querySelector('#confirmCancel');
-
-            let currentForm = null;
-            let lastFocused = null;
-
-            const open = (message, form) => {
-                currentForm = form || null;
-                lastFocused = document.activeElement;
-                if (message) msgEl.textContent = message;
-                popup.classList.remove('hidden');
-                btnOk.focus();
-                document.body.classList.add('overflow-hidden');
-            };
-
-            const close = () => {
-                popup.classList.add('hidden');
-                document.body.classList.remove('overflow-hidden');
-                if (lastFocused) lastFocused.focus();
-                currentForm = null;
-            };
-
-            // TODO: Rename .js-confirm to .js-confirm-button or another more specific name
-            document.querySelectorAll('.js-confirm').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const form = btn.dataset.form
-                        ? document.querySelector(btn.dataset.form)
-                        : btn.closest('form');
-
-                    if (!form) return;
-
-                    const message = btn.dataset.message || 'Es-tu sûr ?';
-                    open(message, form);
-                });
-            });
-
-            btnNo.addEventListener('click', close);
-            btnOk.addEventListener('click', () => {
-                if (currentForm) currentForm.submit();
-            });
-
-            popup.addEventListener('click', (e) => {
-                if (!dialog.contains(e.target)) close();
-            });
-
-            window.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && !popup.classList.contains('hidden')) {
-                    close();
-                }
-            });
-        });
-    </script>
-{% endblock %}
-
 {% block body %}
     <main class="flex flex-col h-full pb-12" style="background-color: #F7F1EC;">
         <div class="flex flex-col gap-y-8 mt-24 mx-auto w-2/5">
@@ -146,25 +86,6 @@
                     Supprimer mon compte
                 </button>
             </form>
-
-            <!-- POPUP DE CONFIRMATION -->
-            <div id="confirmPopup" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-                <div id="confirmDialog" class="rounded-xl bg-white p-6 shadow-lg max-w-sm w-full">
-                    <p id="confirmMessage" class="text-lg font-medium text-neutral-800">
-                        Es-tu sûr ?
-                    </p>
-                    <div class="mt-4 flex justify-end gap-3">
-                        <button type="button" id="confirmCancel"
-                                class="rounded-lg border border-neutral-300 px-4 py-2 text-neutral-700 hover:bg-neutral-100">
-                            Non
-                        </button>
-                        <button type="button" id="confirmOk"
-                                class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700">
-                            Oui
-                        </button>
-                    </div>
-                </div>
-            </div>
         </div>
     </main>
 {% endblock %}
