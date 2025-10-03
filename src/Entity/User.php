@@ -202,8 +202,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     *
-     *
      * @return bool
      */
     public function getApiEnabled(): bool
@@ -247,7 +245,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
     /**
      * Summary of getCreatedAt
      *
@@ -272,10 +269,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-
     /**
-     *
-     *
      * @return DateTimeImmutable|null
      */
     public function getLastLoggedAt(): ?DateTimeImmutable

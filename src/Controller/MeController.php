@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Repository\CartRepository;
 use App\Repository\OrderRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
@@ -13,15 +14,18 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class MeController extends AbstractController
 {
     public function __construct(
         private readonly EntityManagerInterface $entityManager,
         private readonly OrderRepository $orderRepository,
+        private readonly CartRepository $cartRepository,
     ) {}
 
     #[Route('/me', name: 'app_me')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function me(): Response
     {
         $user = $this->getUser();
@@ -33,6 +37,7 @@ final class MeController extends AbstractController
     }
 
     #[Route('/account/toggle-api', name: 'app_api_toggle', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function toggleApi(): Response
     {
         $user = $this->getUser();
@@ -54,17 +59,12 @@ final class MeController extends AbstractController
     /**
      * Delete user account.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param TokenStorageInterface $tokenStorage
-     * @param RequestStack $requestStack
      * @return Response
      * @throws Exception
      */
     #[Route('/account/delete', name: 'app_remove_account', methods: ['POST'])]
-    public function delete(
-        TokenStorageInterface $tokenStorage,
-        RequestStack $requestStack,
-    ): Response
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function delete(TokenStorageInterface $tokenStorage, RequestStack $requestStack): Response
     {
         $user = $this->getUser();
         if (!$user) {
@@ -72,24 +72,30 @@ final class MeController extends AbstractController
             return $this->redirectToRoute('app_login');
         }
 
-        $conn = $this->entityManager->getConnection();
-        $conn->beginTransaction();
+        $this->entityManager->wrapInTransaction(function () use (
+            $user,
+            $tokenStorage,
+            $requestStack,
+        ) {
+            // Log out the user
+            $tokenStorage->setToken(null);
+            $session = $requestStack->getSession();
+            $session->invalidate();
 
-        try {
+            // Remove user's cart
+            $this->cartRepository->remove($user->getCart());
+
+            /**
+             * TODO: Déplacer la suppression de l'utilisateur dans son repo.
+             */
             $this->entityManager->remove($user);
             $this->entityManager->flush();
-            $conn->commit();
-        } catch (\Throwable $e) {
-            $conn->rollBack();
-            $this->addFlash('error', 'La suppression du compte a échoué. ('.$e->getMessage().')');
+
+            $this->addFlash('success', 'Votre compte a bien été supprimé.');
+
             return $this->redirectToRoute('app_home');
-        }
+        });
 
-        $tokenStorage->setToken(null);
-        $session = $requestStack->getSession();
-        $session->invalidate();
-
-        $this->addFlash('success', 'Votre compte a bien été supprimé.');
         return $this->redirectToRoute('app_home');
     }
 }

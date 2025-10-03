@@ -65,4 +65,14 @@ class CartRepository extends ServiceEntityRepository
 
         $this->entityManager->flush();
     }
+
+    public function remove(Cart $cart): void
+    {
+        $this->entityManager->wrapInTransaction(function () use ($cart) {
+            $this->clear($cart);
+
+            $this->entityManager->remove($cart);
+            $this->entityManager->flush();
+        });
+    }
 }
