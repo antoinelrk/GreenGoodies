@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
+use NumberFormatter;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -32,6 +33,20 @@ class Order
     public function getTotalAmount(): ?int
     {
         return $this->total_amount;
+    }
+
+    public function getTotalAmountInCurrency(string $currency = 'EUR', float $rate = 1.0): float
+    {
+        $priceInEuro = $this->getTotalAmount() / 100;
+
+        return $priceInEuro * $rate;
+    }
+
+    public function getFormattedPriceInCurrency(string $currency = 'EUR', float $rate = 1.0, string $locale = 'fr_FR'): string
+    {
+        $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
+
+        return $formatter->formatCurrency($this->getTotalAmountInCurrency($currency, $rate), $currency);
     }
 
     public function setTotalAmount(int $total_amount): static
@@ -63,5 +78,12 @@ class Order
         $this->customer = $customer;
 
         return $this;
+    }
+
+    public function hasItems(): bool
+    {
+        // This is a placeholder implementation.
+        // In a real application, you would check if the order has associated items.
+        return true;
     }
 }

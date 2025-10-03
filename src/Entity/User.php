@@ -373,4 +373,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * User has orders.
+     *
+     * @return bool
+     */
+    public function hasOrders(): bool
+    {
+        return !$this->orders->isEmpty();
+    }
 }

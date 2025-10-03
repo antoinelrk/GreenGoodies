@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Repository\OrderRepository;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerExceptionInterface;
@@ -16,13 +17,19 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 final class MeController extends AbstractController
 {
     public function __construct(
-        private readonly EntityManagerInterface $entityManager
+        private readonly EntityManagerInterface $entityManager,
+        private readonly OrderRepository $orderRepository,
     ) {}
 
     #[Route('/me', name: 'app_me')]
     public function me(): Response
     {
-        return $this->render('pages/me.html.twig');
+        $user = $this->getUser();
+        $orders = $this->orderRepository->findByUser($user);
+
+        return $this->render('pages/me.html.twig', [
+            'orders' => $orders,
+        ]);
     }
 
     #[Route('/account/toggle-api', name: 'app_api_toggle', methods: ['POST'])]
