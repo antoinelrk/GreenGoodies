@@ -23,7 +23,7 @@
                         <tbody class="flex flex-col w-full divide-y divide-gray-200">
                             {% for index, order in orders %}
                                 <tr class="flex justify-between w-full">
-                                    <td class="text-left py-6">#{{ index+1 }}</td>
+                                    <td class="text-left py-6">#{{ order.getId() }}</td>
                                     <td class="text-left py-6">{{ order.createdAt|date('d/m/Y') }}</td>
                                     <td class="text-left py-6">{{ order.getFormattedPriceInCurrency() }}</td>
                                 </tr>
