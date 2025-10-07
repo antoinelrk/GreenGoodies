@@ -8,36 +8,46 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use NumberFormatter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 class Product
 {
+    #[Groups(['products:list'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column(length: 64)]
     private ?string $name = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column]
     private ?int $price = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column(length: 64, nullable: true)]
     private ?string $excerpt = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column]
     private ?bool $available = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[Groups(['products:list'])]
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updated_at = null;
 
