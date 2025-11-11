@@ -1,7 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home Page{% endblock %}
-
 {% block body %}
     <div class="flex overflow-hidden" style="background-color: #E8F0E3;">
         <div class="flex flex-col justify-center items-center w-1/2">
@@ -32,11 +30,11 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                 {% for product in products %}
                     {% include 'partials/products/product.html.twig' with {
-                        to: '#',
-                        image: product.image,
+                        to: path('products.show', { id: product.id }),
+                        picture: product.picture,
                         name: product.name,
-                        description: product.description,
-                        price: product.price
+                        excerpt: product.excerpt,
+                        price: product.getFormattedPriceInCurrency(),
                     } %}
                 {% endfor %}
             </div>

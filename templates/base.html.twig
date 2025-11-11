@@ -1,15 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}GreenGoodies{% endblock %}</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    {% block stylesheets %}
-    {% endblock %}
 
-    {% block javascripts %}
-        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {{ importmap() }}
+
+    {% block stylesheets %}
     {% endblock %}
 </head>
 <body>
@@ -17,6 +16,28 @@
         {% include 'partials/header.html.twig' %}
         {% block body %}{% endblock %}
         {% include 'partials/footer.html.twig' %}
+    </div>
+    {% block javascripts %}
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+
+    <!-- POPUP DE CONFIRMATION -->
+    <div id="confirmPopup" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div id="confirmDialog" class="rounded-xl bg-white p-6 shadow-lg max-w-sm w-full">
+            <p id="confirmMessage" class="text-lg font-medium text-neutral-800">
+                Es-tu sûr ?
+            </p>
+            <div class="mt-4 flex justify-end gap-3">
+                <button type="button" id="confirmCancel"
+                        class="rounded-lg border border-neutral-300 px-4 py-2 text-neutral-700 hover:bg-neutral-100">
+                    Non
+                </button>
+                <button type="button" id="confirmOk"
+                        class="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700">
+                    Oui
+                </button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
