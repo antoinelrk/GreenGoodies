@@ -23,7 +23,8 @@ final class ApiLoginChecker implements UserCheckerInterface
 
         if (!$user->getApiEnabled()) {
             throw new CustomUserMessageAccountStatusException(
-                'Votre compte ne dispose pas de l’accès à l’API.'
+                message: 'Votre compte ne dispose pas de l’accès à l’API.',
+                code: 403,
             );
         }
     }
