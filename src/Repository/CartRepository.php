@@ -23,9 +23,10 @@ class CartRepository extends ServiceEntityRepository
 
     /**
      * @param int $id User ID
-     * @return Cart
+     *
+     * @return Cart|null
      */
-    public function get(int $id): Cart
+    public function get(int $id): ?Cart
     {
         // TODO: Optimiser cette requête, supprimer les attributs en trop (le password par exemple...)
         return $this->createQueryBuilder('c')
