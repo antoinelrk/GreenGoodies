@@ -21,14 +21,13 @@ class ProductController extends AbstractController
      * @return JsonResponse
      */
     #[Route('/api/products', name: 'api_products_index', methods: ['GET'])]
-    #[IsGranted("API_ACCESS")]
     public function index(ProductRepository $repository): JsonResponse
     {
-        if (!$this->isGranted(ApiVoter::ACCESS)) {
-            return new JsonResponse(
-                ['error' => 'access_denied', 'message' => 'Votre accès API est désactivé.'],
-                403
-            );
+        if (!$this->getUser()->getApiEnabled()) {
+            return new JsonResponse([
+                'message' => 'Votre compte ne dispose pas de l’accès à l’API.',
+                'code' => Response::HTTP_FORBIDDEN
+            ], Response::HTTP_FORBIDDEN);
         }
 
         $products = $repository->findAll();
