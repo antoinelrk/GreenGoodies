@@ -30,7 +30,7 @@
                     <ul class="flex flex-col w-full space-y-4">
                         {% for item in cart.cartItems %}
                             <li class="flex w-full space-x-12 font-inter">
-                                <img src="{{ item.product.picture }}" alt="">
+                                <img class="w-24 aspect-square object-cover object-center" src="{{ item.product.picture }}" alt="">
 
                                 <div class="my-auto">
                                     <p class="font-bold">{{ item.product.name }}</p>

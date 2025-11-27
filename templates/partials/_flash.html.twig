@@ -1,0 +1,26 @@
+{# Succès #}
+{% for message in app.flashes('success') %}
+    <div class="w-full">
+        <div class="flex items-center justify-center h-12 font-medium text-white bg-green-600">
+            {{ message }}
+        </div>
+    </div>
+{% endfor %}
+
+{# Erreurs #}
+{% for message in app.flashes('error') %}
+    <div class="w-full">
+        <div class="flex items-center justify-center h-12 font-medium text-white bg-red-600">
+            {{ message }}
+        </div>
+    </div>
+{% endfor %}
+
+{# Warnings #}
+{% for message in app.flashes('warning') %}
+    <div class="w-full">
+        <div class="flex items-center justify-center h-12 font-medium text-white bg-amber-600">
+            {{ message }}
+        </div>
+    </div>
+{% endfor %}
